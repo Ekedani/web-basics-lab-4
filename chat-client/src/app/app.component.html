@@ -1,0 +1,9 @@
+<div class="container">
+  <app-chat
+    *ngIf="isLoggedIn; else login"
+  ></app-chat>
+  <ng-template #login>
+    <app-login
+    ></app-login>
+  </ng-template>
+</div>

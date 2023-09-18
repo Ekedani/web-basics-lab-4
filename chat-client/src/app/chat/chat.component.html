@@ -1,0 +1,57 @@
+<div class="chat-container" *ngIf="socket.connected; else connecting">
+  <div class="messages-container">
+    <div *ngFor="let message of messages" class="message">
+      <div class="message-header">
+        <p
+          [ngClass]="{
+            'message-author--me': message.user.id === socket.id,
+          }"
+          class="message-author"
+        >{{ message.user.username }}</p>
+      </div>
+      <div class="message-content">
+        <p class="message-text">{{ message.content }}</p>
+        <p class="message-date">{{message.timestamp | date:'shortTime'}}</p>
+      </div>
+    </div>
+  </div>
+  <form
+    class="message-form"
+    [formGroup]="messageForm"
+    (ngSubmit)="sendMessage()"
+  >
+    <mat-form-field
+      appearance="outline"
+      subscriptSizing="dynamic"
+    >
+      <mat-label>Message</mat-label>
+      <textarea
+        #messageInput
+        matInput
+        formControlName="message"
+        cdkTextareaAutosize="false"
+        placeholder="Type a message..."
+        [scrollTop]="messageInput.scrollHeight"
+        rows="2"
+      >
+      </textarea>
+    </mat-form-field>
+    <button
+      type="submit"
+      mat-fab
+      [disabled]="!messageForm.valid"
+      color="primary"
+    >
+      <mat-icon>send</mat-icon>
+    </button>
+  </form>
+</div>
+<ng-template #connecting>
+  <mat-spinner
+    class="spinner"
+    [diameter]="100"
+    [strokeWidth]="5"
+    [color]="'primary'"
+    [mode]="'indeterminate'"
+  ></mat-spinner>
+</ng-template>
